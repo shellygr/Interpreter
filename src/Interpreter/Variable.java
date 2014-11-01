@@ -1,6 +1,8 @@
 package Interpreter;
 
 public class Variable {
+	public static final int VAR_SIZE = 1;
+	
 	private char name;
 	
 	public Variable(char name) {

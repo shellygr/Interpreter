@@ -3,6 +3,7 @@ package Interpreter;
 import java.io.BufferedReader;
 import java.util.SortedMap;
 
+import Program.CompilationException;
 import Program.Program;
 import Program.Commands.Command;
 import Test.Debug;
@@ -44,19 +45,33 @@ public class Interpreter {
 					// Ready and set for next command
 				}
 			}
-			
-			p.fini();
 		}
 
 		private Integer getNextCmdLabel(SortedMap<Integer, Command> map, int currentCmdLabel) {
 			return (map.subMap(currentCmdLabel+1, map.lastKey()+1)).firstKey(); // Use subMap to get the following statement
 		}
 		
-		public static void runProgramFromReader(BufferedReader reader) {
-			Program program = new Program(reader);
-			Interpreter interpreter = new Interpreter();
+		@SuppressWarnings("finally")
+		public static int runProgramFromReader(BufferedReader reader) {
+			boolean hadError = false;
+			Program program = null;
 			
-			interpreter.run(program);
+			try {
+				program = new Program(reader);
+				Interpreter interpreter = new Interpreter();
+			
+				interpreter.run(program);
+			} catch (CompilationException e) {
+				hadError = true;
+			} catch (RuntimeException e) {
+				hadError = true;
+			} finally {
+				if (program != null) {
+					program.fini();
+				}
+				
+				return (hadError ? 1 : 0);
+			}
 		}
 		
 }

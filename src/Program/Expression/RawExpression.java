@@ -1,8 +1,8 @@
 package Program.Expression;
 
 import Interpreter.Variable;
+import Program.CompilationException;
 import Program.Operations.BinaryOp;
-import Program.Operations.BoolOp;
 import Test.Debug;
 
 public class RawExpression {
@@ -15,7 +15,7 @@ public class RawExpression {
 		this.lineNumber = lineNumber;
 	}
 	
-	public Expression parseExpressionString() {
+	public Expression parseExpressionString() throws CompilationException {
 		// Very basic testing for type, Expression constructor will check for syntax errors
 		Debug.debug(exprString);
 		if (exprString.isEmpty()) {
@@ -80,7 +80,7 @@ public class RawExpression {
 			firstWord = exprString;
 		} else {
 			firstWord = exprString.substring(0, firstDelimiterIndex);
-			exprString = exprString.substring(firstDelimiterIndex).trim();
+			exprString = exprString.substring(firstDelimiterIndex+1);
 		}
 		
 		Debug.debug("First word: " + firstWord);
@@ -91,19 +91,9 @@ public class RawExpression {
 	private int findFirstSpaceOrEndOfWord() {
 		for (int i = 0 ; i < exprString.length() ; ++i) {
 			char currentChar = exprString.charAt(i);
-			if (Character.isWhitespace(currentChar)
-					|| ';' == currentChar
-					|| ')' == currentChar
-					|| ':' == currentChar
-					|| BoolOp.INVALID != BoolOp.parseBoolOp(Character.toString(currentChar)) // BinaryOp: Must have space between var and binaryOp, not between var and BoolOp
-																							// i.e. x<2 legal, +x+2 y not legal
-				) {
+			if (Character.isWhitespace(currentChar)) {
 					return i;
 				}
-			
-			if (i != 0 && BoolOp.INVALID != BoolOp.parseBoolOp(exprString.substring(i-1,i+1))) { // Check if there's a 2-char boolOp as end-of-word
-				return i -1;
-			}
 		}
 		
 		return -1;

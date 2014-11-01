@@ -11,7 +11,7 @@ public class Debug {
 
 	public static void debug(Throwable throwable) {
 		if (DEBUG) {
-			throwable.printStackTrace();
+			throwable.printStackTrace(System.out);
 		}
 	}
 }

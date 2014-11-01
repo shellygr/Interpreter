@@ -2,12 +2,13 @@ package Program.Expression;
 
 import Interpreter.Error;
 import Interpreter.InterpreterEnvironment;
+import Program.CompilationException;
 
 public class NumExpression implements Expression {
 
 	int num;
 	
-	public NumExpression(RawExpression rawExpression) {
+	public NumExpression(RawExpression rawExpression) throws CompilationException {
 		try {
 			// Extract first word
 			String numString = rawExpression.getFirstWord();			

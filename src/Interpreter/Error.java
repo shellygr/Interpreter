@@ -1,5 +1,6 @@
 package Interpreter;
 
+import Program.CompilationException;
 import Test.Debug;
 
 public enum Error {
@@ -10,15 +11,18 @@ public enum Error {
 		this.code = code;
 	}
 	
-	public static void error(int line, Error err) {
-		Printer.PrintError(line, err.code);
-		Debug.debug(new Exception());
-		System.exit(1);
+	public static void error(int line, Error err) throws CompilationException {
+		error(line, err, new Exception());
 	}
 
-	public static void error(int line, Error err, Exception e) {
-		Printer.PrintError(line, err.code);
+	public static void error(int line, Error err, Exception e) throws CompilationException {
 		Debug.debug(e);
-		System.exit(1);
+		if (err.code < 4) {
+			throw new CompilationException(err.code);
+		} else {
+			Printer.PrintError(line, err.code);
+			Debug.debug("Runtime exception!");
+			throw new RuntimeException();
+		}
 	}
 }

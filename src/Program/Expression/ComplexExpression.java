@@ -2,6 +2,7 @@ package Program.Expression;
 
 import Interpreter.Error;
 import Interpreter.InterpreterEnvironment;
+import Program.CompilationException;
 import Program.Operations.BinaryOp;
 import Test.Debug;
 
@@ -11,8 +12,7 @@ public class ComplexExpression implements Expression {
 	private Expression exprLeft;
 	private Expression exprRight;
 	
-	// TODO: I enforce spaces here because that's polish notation so I'm not confined to C-style spacing.
-	public ComplexExpression(RawExpression rawExpression) {
+	public ComplexExpression(RawExpression rawExpression) throws CompilationException {
 		try {
 			String binaryOpString = rawExpression.getFirstWord();
 			binaryOp = BinaryOp.parseBinaryOp(binaryOpString);
@@ -22,6 +22,10 @@ public class ComplexExpression implements Expression {
 			
 			exprLeft = rawExpression.parseExpressionString();
 			exprRight = rawExpression.parseExpressionString();
+			
+			if (exprLeft == null || exprRight == null) {
+				Error.error(rawExpression.getLineNumber(), Error.SYNTAX_ERROR);
+			}
 		} catch (Exception e) {
 			Error.error(rawExpression.getLineNumber(), Error.SYNTAX_ERROR, e);
 		}

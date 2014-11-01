@@ -2,23 +2,45 @@ package Program;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import Interpreter.Error;
+import Interpreter.Printer;
 import Program.Commands.Command;
 import Program.Commands.GotoCommand;
 import Test.Debug;
 
 public class Program {
 
-	private StatementList stmtList;
-	private SortedMap<Integer, Command> cmdLabelToCmdMap;
+	private StatementList stmtList = null;
+	private SortedMap<Integer, Command> cmdLabelToCmdMap = null;
 	
-	public Program(BufferedReader reader) {
+	public Program(BufferedReader reader) throws CompilationException {
 		stmtList = new StatementList(reader);
 		buildMapAndVerify();
+		if (printErrors(stmtList.getLineToErrors())) {
+			this.fini();
+			throw new CompilationException(0);
+		}
+	}
+
+	private boolean printErrors(TreeMap<Integer, List<Integer>> lineToErrors) {
+		boolean hadError = false;
+		
+		for (Integer lineNumber : lineToErrors.keySet()) {
+			List<Integer> errorsForLine = lineToErrors.get(lineNumber);
+			Collections.sort(errorsForLine);
+			for (Integer error : errorsForLine) {
+				Printer.PrintError(lineNumber, error);
+				hadError = true;
+			}
+		}
+		
+		return hadError;
 	}
 
 	public void buildMapAndVerify() {
@@ -35,7 +57,11 @@ public class Program {
 		for (Statement statement : statements) {
 			++currentStatementIndex;
 			if (statement.getNum() <= currentCommandLabel) {
-				Error.error(currentStatementIndex, Error.BAD_LABELS);
+				try {
+					Error.error(currentStatementIndex, Error.BAD_LABELS);
+				} catch (CompilationException e) {
+					stmtList.putNewError(currentStatementIndex, Error.BAD_LABELS.code);
+				}
 			}
 			
 			currentCommandLabel = statement.getNum();
@@ -52,7 +78,11 @@ public class Program {
 		for (Integer gotoLabel : gotoLabelsToLineNumberMap.keySet()) {
 			if (!cmdLabelToCmdMap.keySet().contains(gotoLabel)) {
 				Debug.debug("Set " + cmdLabelToCmdMap.keySet() + " doesn't contain " + gotoLabel);
-				Error.error(gotoLabelsToLineNumberMap.get(gotoLabel), Error.BAD_GOTO);
+				try {
+					Error.error(gotoLabelsToLineNumberMap.get(gotoLabel), Error.BAD_GOTO);
+				} catch (CompilationException e) {
+					stmtList.putNewError(gotoLabelsToLineNumberMap.get(gotoLabel), Error.BAD_GOTO.code);
+				}
 			}
 		}
 	}

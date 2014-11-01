@@ -1,8 +1,10 @@
 package Program.Commands;
 
+import Program.CompilationException;
+
 public class CommandFactory {
 	
-	public static Command buildCommandByType(String cmdString, int lineNumber) {
+	public static Command buildCommandByType(String cmdString, int lineNumber) throws CompilationException {
 		
 		// Very basic testing for type, Command constructor will check for syntax errors
 		if (isIf(cmdString)) { // First letter is "i"

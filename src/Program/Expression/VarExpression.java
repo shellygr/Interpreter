@@ -3,12 +3,13 @@ package Program.Expression;
 import Interpreter.Error;
 import Interpreter.InterpreterEnvironment;
 import Interpreter.Variable;
+import Program.CompilationException;
 
 public class VarExpression implements Expression {
 
 	Variable var;
 	
-	public VarExpression(RawExpression rawExpression) {
+	public VarExpression(RawExpression rawExpression) throws CompilationException {
 		try {
 			// Extract first word
 			String varString = rawExpression.getFirstWord();

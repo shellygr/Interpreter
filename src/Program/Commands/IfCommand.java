@@ -1,42 +1,39 @@
 package Program.Commands;
 
 import Interpreter.InterpreterEnvironment;
-import Program.Expression.Expression;
-import Program.Expression.ExpressionFactory;
+import Interpreter.Variable;
+import Program.CompilationException;
 import Program.Operations.BoolOp;
 import Test.Debug;
 import Interpreter.Error;
 
 public class IfCommand implements Command {
 
-	private Expression exprLeft;
-	private Expression exprRight;
+	private Variable varLeft;
+	private Variable varRight;
 	private BoolOp boolOp;
 	private Command command;
 	
-	public IfCommand(String cmdString, int lineNumber) {
+	public IfCommand(String cmdString, int lineNumber) throws CompilationException {
 		// One big try-catch to match all syntax errors not caught elsewhere.
 		try {
-			String prefix = "if";
+			String prefix = "if(";
 			if (cmdString.indexOf(prefix) != 0) {
 				Error.error(lineNumber, Error.SYNTAX_ERROR);
 			}
 			
 			StringBuilder cutString = new StringBuilder(cmdString.substring(prefix.length()).trim());
-			
-			// Note: Var and BoolOp do not contain '(' neither ')'
-			
-			if (cutString.indexOf("(") != 0) {
+				
+			// START CALC VAR LEFT
+			Debug.debug("Looking for varLeft: " + cutString);
+			varLeft = new Variable(cutString.charAt(0));
+			if (!varLeft.isLegalName()) {
 				Error.error(lineNumber, Error.SYNTAX_ERROR);
 			}
-			
-			// START CALC VAR LEFT
-			cutString.deleteCharAt(0); // Step 1 more char (after '(') 
-			Debug.debug("Looking for exprLeft: " + cutString);
-			exprLeft = ExpressionFactory.buildExpression(cutString, lineNumber);
 			// END CALC VAR LEFT
 			
 			// START CALC BOOL OP
+			cutString.delete(0, Variable.VAR_SIZE+1);
 			Debug.debug("Looking for boolOp: " + cutString);
 			
 			int lenOfBoolOp = 0;
@@ -54,17 +51,21 @@ public class IfCommand implements Command {
 			// END CALC BOOL OP
 			
 			// START CALC VAR RIGHT
-			cutString.delete(0, lenOfBoolOp); // Step after the boolOp
-			Debug.debug("Looking for exprRight: " + cutString);
-			exprRight = ExpressionFactory.buildExpression(cutString, lineNumber);
+			cutString.delete(0, lenOfBoolOp+1); // Step after the boolOp
+			Debug.debug("Looking for varRight: " + cutString);
+			varRight = new Variable(cutString.charAt(0));
+			if (!varRight.isLegalName()) {
+				Error.error(lineNumber, Error.SYNTAX_ERROR);
+			}
 			// END CALC VAR RIGHT		
 			
-			Debug.debug("Looking for ')': " + cutString);
+			cutString.delete(0, Variable.VAR_SIZE);
+			Debug.debug("Looking for ') ': " + cutString);
 			if (cutString.indexOf(")") != 0) {
 				Error.error(lineNumber, Error.SYNTAX_ERROR);
 			}
 			
-			cutString.deleteCharAt(0); // Now we get to the command
+			cutString.delete(0, ") ".length()); // Now we get to the command
 			Debug.debug("Looking for a command: " + cutString);
 			command = CommandFactory.buildCommandByType(cutString.toString().trim(), lineNumber);
 		} catch (Exception e) {
@@ -83,15 +84,15 @@ public class IfCommand implements Command {
 	}
 
 	private boolean calcClause(InterpreterEnvironment environment) {
-		int valLeft = exprLeft.evaluate(environment);
-		int valRight = exprRight.evaluate(environment);
+		int valLeft = environment.getValue(varLeft);
+		int valRight = environment.getValue(varRight);
 		
 		return boolOp.compute(valLeft, valRight);
 	}
 
 	@Override
 	public String toString() {
-		return "IfCommand [exprLeft=" + exprLeft + ", exprRight=" + exprRight
+		return "IfCommand [varLeft=" + varLeft + ", varRight=" + varRight
 				+ ", boolOp=" + boolOp + ", command=" + command + "]";
 	}
 	

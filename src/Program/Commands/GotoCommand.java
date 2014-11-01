@@ -5,6 +5,7 @@ import java.util.Map;
 
 import Interpreter.Error;
 import Interpreter.InterpreterEnvironment;
+import Program.CompilationException;
 import Test.Debug;
 
 public class GotoCommand implements Command {
@@ -12,7 +13,7 @@ public class GotoCommand implements Command {
 	private Integer cmdLabel;
 	private static Map<Integer, Integer> commandLabelsInProgram = new HashMap<Integer, Integer>();
 	
-	public GotoCommand(String cmdString, int lineNumber) {
+	public GotoCommand(String cmdString, int lineNumber) throws CompilationException {
 		String prefix = "goto ";
 		
 		if ((cmdString.indexOf(prefix) != 0)
@@ -21,8 +22,10 @@ public class GotoCommand implements Command {
 			Error.error(lineNumber, Error.SYNTAX_ERROR);
 		}
 		
+		Debug.debug("Goto command string = " + cmdString);
+		
 		try {
-			cmdLabel = Integer.valueOf(cmdString.substring(prefix.length()).trim());		
+			cmdLabel = Integer.valueOf(cmdString.substring(prefix.length(), cmdString.length()));		
 			commandLabelsInProgram.put(cmdLabel, lineNumber); // Added once per constructor (new goto command) run.
 		} catch (Exception e) {
 			Error.error(lineNumber, Error.SYNTAX_ERROR, e);

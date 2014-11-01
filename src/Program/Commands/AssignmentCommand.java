@@ -3,6 +3,7 @@ package Program.Commands;
 import Interpreter.Error;
 import Interpreter.InterpreterEnvironment;
 import Interpreter.Variable;
+import Program.CompilationException;
 import Program.Expression.Expression;
 import Program.Expression.ExpressionFactory;
 import Test.Debug;
@@ -12,7 +13,7 @@ public class AssignmentCommand implements Command {
 	private Variable var;
 	private Expression expression;
 	
-	public AssignmentCommand(String cmdString, int lineNumber) {
+	public AssignmentCommand(String cmdString, int lineNumber) throws CompilationException {
 		String assignmentString = ":=";
 		
 		try {
@@ -21,12 +22,12 @@ public class AssignmentCommand implements Command {
 				Error.error(lineNumber, Error.SYNTAX_ERROR);
 			}
 			
-			String cutString = cmdString.substring(1).trim(); // Handle :=
+			String cutString = cmdString.substring(Variable.VAR_SIZE+1); // Handle :=
 			if (cutString.indexOf(assignmentString) != 0) {
 				Error.error(lineNumber, Error.SYNTAX_ERROR);
 			}
 			
-			cutString = cutString.substring(2).trim(); // Handle expression
+			cutString = cutString.substring(assignmentString.length() + 1); // Handle expression
 			expression = ExpressionFactory.buildExpression(new StringBuilder(cutString), lineNumber);
 			
 			Debug.debug("Got expression for assignment command: " + expression);

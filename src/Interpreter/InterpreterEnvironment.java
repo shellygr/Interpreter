@@ -5,11 +5,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
+import Program.CompilationException;
+
 public class InterpreterEnvironment {
-	private Integer currentCmdLabel;
+	private Integer currentCmdLabel = null;
 	private int lineNumber;
-	private Map<Variable, Integer> memory;
-	private SortedSet<Integer> cmds;
+	private Map<Variable, Integer> memory = null;
+	private SortedSet<Integer> cmds = null;
 	private boolean gotoIssued = false;
 
 	public InterpreterEnvironment() {
@@ -24,9 +26,14 @@ public class InterpreterEnvironment {
 	
 	public int getValue(Variable var) {
 		Integer value = memory.get(var);
-		
+
 		if (value == null) {
-			Error.error(lineNumber, Error.UNINIT_VAR_USED);
+			try {
+				Error.error(lineNumber, Error.UNINIT_VAR_USED);
+			} catch (CompilationException e) {
+				System.out.println("Error 4 thrown");
+				throw new RuntimeException("4");
+			}
 		}
 		
 		return value.intValue();

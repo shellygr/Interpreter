@@ -3,6 +3,7 @@ package Program.Commands;
 import Interpreter.InterpreterEnvironment;
 import Interpreter.Error;
 import Interpreter.Printer;
+import Program.CompilationException;
 import Program.Expression.Expression;
 import Program.Expression.ExpressionFactory;
 import Test.Debug;
@@ -11,27 +12,21 @@ public class PrintCommand implements Command {
 	
 	Expression expression;
 	
-	public PrintCommand(String cmdString, int lineNumber) {
+	public PrintCommand(String cmdString, int lineNumber) throws CompilationException {
 		cmdString = cmdString.trim();
 		
-		String prefix = "print";
+		String prefix = "print(";
 		String suffix = ")";
 		if (cmdString.indexOf(prefix) != 0
-				|| cmdString.lastIndexOf(suffix) != cmdString.length()-1)
+				|| !cmdString.endsWith(suffix))
 		{
 			Error.error(lineNumber, Error.SYNTAX_ERROR);
 		}
-		
-		cmdString = cmdString.substring(prefix.length()).trim();
-		Debug.debug("Look for '(': " + cmdString);
-		if (cmdString.charAt(0) != '(') {
-			Error.error(lineNumber, Error.SYNTAX_ERROR);
-		}
-		
-		String expressionToParseString = cmdString.substring(1, cmdString.length()-1).trim();
+			
+		String expressionToParseString = cmdString.substring(prefix.length(), cmdString.length()-suffix.length());
 			
 		StringBuilder expressionToParse =  new StringBuilder(expressionToParseString);
-		Debug.debug("Getting expression for print command: " + expressionToParseString);
+		Debug.debug("Getting expression for print command: " + expressionToParseString + " of length " + expressionToParseString.length());
 		expression = ExpressionFactory.buildExpression(expressionToParse, lineNumber);
 		
 		if (expression == null) {
