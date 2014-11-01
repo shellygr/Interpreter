@@ -60,7 +60,7 @@ public class RawExpression {
 		
 		char secondCh = exprString.charAt(1);
 		boolean isZeroNumber = ('0' == firstCh  // First is 0
-									&& (Character.isWhitespace(secondCh) || ';' == secondCh)); // The seocnd is whitespace, or ';'
+									&& (secondCh == ' ' || ';' == secondCh)); // The seocnd is whitespace, or ';'
 		
 		return isZeroNumber;
 	}
@@ -91,7 +91,7 @@ public class RawExpression {
 	private int findFirstSpaceOrEndOfWord() {
 		for (int i = 0 ; i < exprString.length() ; ++i) {
 			char currentChar = exprString.charAt(i);
-			if (Character.isWhitespace(currentChar)) {
+			if (currentChar == ' ') {
 					return i;
 				}
 		}
