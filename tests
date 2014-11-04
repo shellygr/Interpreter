@@ -1,0 +1,256 @@
+[34mEMPTY_PROGRAM[37m
+[36m
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEXERCISE_PROGRAM[37m
+[36m10 : x := 1 ;
+20 : y := 100 ;
+30 : z := 0 ;
+40 : if(x > y) if(x != z) goto 90 ;
+50 : z := + z x ;
+60 : x := + x - 2 1 ;
+70 : goto 40 ;
+90 : print(z) ;
+[37m
+5050
+[32m--------------->SUCCESS[37m
+
+[34mEXERCISE_PROGRAM_NO_SPACE_BEFORE_NEKPAS[37m
+[36m10 : x := 1;
+20 : y := 100;
+30 : z := 0;
+40 : if(x > y) if(x != z) goto 90;
+50 : z := + z x;
+60 : x := + x - 2 1;
+70 : goto 40;
+90 : print(z);
+[37m
+Error! Line:1 Code:1
+Error! Line:2 Code:1
+Error! Line:3 Code:1
+Error! Line:4 Code:1
+Error! Line:4 Code:2
+Error! Line:5 Code:1
+Error! Line:6 Code:1
+Error! Line:7 Code:1
+Error! Line:7 Code:2
+Error! Line:8 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEXERCISE_PROGRAM_MINIMAL_SPACES_GOTO_SPACE_FAIL[37m
+[36m5:a := 0 ;
+10 :x := 1 ;
+15: t := 0 ;
+20 : y :=100 ;
+30 : z:= 0 ;
+40 : if(x > y) if(z != z) goto90;
+40 : if(x > y) if(z != z) goto 90;
+40 : if(x > y) if(z != z) goto90 ;
+[37m
+Error! Line:1 Code:1
+Error! Line:2 Code:1
+Error! Line:3 Code:1
+Error! Line:4 Code:1
+Error! Line:5 Code:1
+Error! Line:6 Code:1
+Error! Line:7 Code:1
+Error! Line:7 Code:2
+Error! Line:8 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEXERCISE_PROGRAM_MINIMAL_SPACES_FAIL_TO_PARSE_REVERSE_POLISH_NOTATION[37m
+[36m10 : x := 1 ;
+20 : y := 100 ;
+30 : z := 0 ;
+40 : if(x > y) if(x!=z) if(x <= z)goto 90 ;
+50 : z := +z x ;
+[37m
+Error! Line:4 Code:1
+Error! Line:5 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEXERCISE_PROGRAM_EXTRA_SPACES_SHOULD_FAIL[37m
+[36m10 : x :=    1 ;
+20 : y    :=    100 ;
+30 :       z := 0 ;
+40 : if(    x  >  y  )   if    (x  !=   z    )    goto    90 ;
+50 : z :=    + z    x   ;    
+60 : x :=  +      x    - 2    1 ;
+70 : goto 40    ;
+90 : print (  z   ) ;
+[37m
+Error! Line:1 Code:1
+Error! Line:2 Code:1
+Error! Line:4 Code:1
+Error! Line:5 Code:1
+Error! Line:6 Code:1
+Error! Line:7 Code:2
+Error! Line:8 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mPRINT_COMMAND_WITH_NUM_AND_SPACES_SHOULD_FAIL[37m
+[36m22 : print(42   ) ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_PRINT_COMMAND_1[37m
+[36m22 : print() ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_PRINT_COMMAND_2[37m
+[36m23 : print(   		  ) ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_IF_COMMAND_1[37m
+[36m32 : if() print(0) ;
+33 : if (x > y) ;
+[37m
+Error! Line:1 Code:1
+Error! Line:2 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_IF_COMMAND_2[37m
+[36m34 : if(   		  ) print(1) ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_GOTO_COMMAND_1[37m
+[36m42 : goto ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_GOTO_COMMAND_2[37m
+[36m43 : goto;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_ASSIGN_COMMAND_1[37m
+[36m52 : x := ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mEMPTY_ASSIGN_COMMAND_2[37m
+[36m53 :    := 0;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mMISSING_NEKPAS[37m
+[36m70 : print(7) ;
+71 : print(8)
+[37m
+Error! Line:2 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mNEGATIVE_LABEL_SHOULD_FAIL[37m
+[36m-1 : print(10) ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mZERO_LABEL[37m
+[36m0 : print(100) ;
+[37m
+100
+[32m--------------->SUCCESS[37m
+
+[34mZERO_LABEL_NOT_ACCORDING_TO_CFG[37m
+[36m0123 : print(100) ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mNOT_MONOTONIC_LABELS_1_WITH_SYNTAX_ERROR[37m
+[36m1 : print(2) ;
+500 : print(500) ;
+250 : print(250) ;
+200 : print(270) ;
+[37m
+Error! Line:3 Code:3
+Error! Line:4 Code:3
+[32m--------------->SUCCESS[37m
+
+[34mNOT_MONOTONIC_LABELS_2[37m
+[36m300 : print(300);
+300 : print(300);
+[37m
+Error! Line:1 Code:1
+Error! Line:2 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mMULTI_PRINT[37m
+[36m1 : print(100) ;
+2 : print(200) ;
+[37m
+100
+200
+[32m--------------->SUCCESS[37m
+
+[34mBAD_GOTO_TEST[37m
+[36m1 : goto 10 ;
+[37m
+Error! Line:1 Code:2
+[32m--------------->SUCCESS[37m
+
+[34mUNINIT_VAR[37m
+[36m1 : print(x) ;
+[37m
+Error! Line:1 Code:4
+[32m--------------->SUCCESS[37m
+
+[34mILLEGAL_VAR_NAME[37m
+[36m1 : X := 2 ;
+[37m
+Error! Line:1 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mCOMPLEX_IF_SHOULD_FAIL[37m
+[36m1 : x := 2 ;
+2 : y := 4 ;
+3 : if(* x x == y) print(1) ;
+4 : if(x == / y 2) print(1) ;
+5 : if(+ x x == * x x) print(1) ;
+6 : if(+ x + x + x x > - x x) print(1) ;
+7 : if(+ x x <= * x x) print(1) ;
+8 : if(+ x x > / 2 y) print(1) ;
+[37m
+Error! Line:3 Code:1
+Error! Line:4 Code:1
+Error! Line:5 Code:1
+Error! Line:6 Code:1
+Error! Line:7 Code:1
+Error! Line:8 Code:1
+[32m--------------->SUCCESS[37m
+
+[34mDIVIDE[37m
+[36m1 : print(\ 8 2) ;
+2 : x := \ 8 2 ;
+3 : print(x) ;
+[37m
+4
+4
+[32m--------------->SUCCESS[37m
+
+[34mLINE_FEEDS_ONLY[37m
+[36m
+
+
+
+[37m
+Error! Line:1 Code:1
+Error! Line:2 Code:1
+Error! Line:3 Code:1
+Error! Line:4 Code:1
+[32m--------------->SUCCESS[37m
+

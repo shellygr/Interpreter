@@ -31,7 +31,6 @@ public class InterpreterEnvironment {
 			try {
 				Error.error(lineNumber, Error.UNINIT_VAR_USED);
 			} catch (CompilationException e) {
-				System.out.println("Error 4 thrown");
 				throw new RuntimeException("4");
 			}
 		}

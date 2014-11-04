@@ -11,7 +11,7 @@ public class NumExpression implements Expression {
 	public NumExpression(RawExpression rawExpression) throws CompilationException {
 		try {
 			// Extract first word
-			String numString = rawExpression.getFirstWord();			
+			String numString = rawExpression.getAndAdvanceFirstWord();			
 			num = Integer.parseInt(numString);
 		} catch (Exception e) {
 			Error.error(rawExpression.getLineNumber(), Error.SYNTAX_ERROR, e);

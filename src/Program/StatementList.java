@@ -23,17 +23,17 @@ public class StatementList {
 			while ((line = reader.readLine()) != null) {
 				++lineNumber;
 				line = line.trim();
-				
-				Debug.debug("Line Number: " + lineNumber + " : " + line);
-				
-				try {
-					Statement currentStatement = new Statement(line, lineNumber);
-					statements.add(currentStatement);
-				} catch (CompilationException e) {
-					Debug.debug("Compilation exception in line " + lineNumber + ", continuing to next line (Program will not run anyway)");
-					putNewError(lineNumber, e.getErrorCode());
-					continue;
-				}
+					
+					Debug.debug("Line Number: " + lineNumber + " : " + line);
+					
+					try {
+						Statement currentStatement = new Statement(line, lineNumber);
+						statements.add(currentStatement);
+					} catch (CompilationException e) {
+						Debug.debug("Compilation exception in line " + lineNumber + ", continuing to next line (Program will not run anyway)");
+						putNewError(lineNumber, e.getErrorCode());
+						statements.add(null); // Adding the null statement to maintain line numbers
+					}
 			}
 		} catch (IOException e) {
 			System.err.println("IO Error: " + e);

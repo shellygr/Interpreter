@@ -41,7 +41,7 @@ public enum BinaryOp {
 				return MULT;
 			case '-':
 				return MINUS;
-			case '/':
+			case '\\':
 				return DIVIDE;
 			default:
 				return INVALID;

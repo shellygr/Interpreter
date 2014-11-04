@@ -9,7 +9,7 @@ import Interpreter.Interpreter;
 
 public class Test {
 	
-	public static final String EMPTY_PROGRAM = "";
+	public static final String EMPTY_PROGRAM = "\n";
 	
 	public static final String EXERCISE_PROGRAM = "" +
 			"10 : x := 1 ;"
@@ -20,7 +20,7 @@ public class Test {
 			+ "\n" + "60 : x := + x - 2 1 ;"
 			+ "\n" + "70 : goto 40 ;"
 			+ "\n" + "90 : print(z) ;"
-			;
+			+ "\n";
 	
 	public static final String EXERCISE_PROGRAM_NO_SPACE_BEFORE_NEKPAS = "" +
 			"10 : x := 1;"
@@ -31,7 +31,7 @@ public class Test {
 			+ "\n" + "60 : x := + x - 2 1;"
 			+ "\n" + "70 : goto 40;"
 			+ "\n" + "90 : print(z);"
-			;
+			+ "\n";
 	
 	public static final String EXERCISE_PROGRAM_MINIMAL_SPACES_GOTO_SPACE_FAIL = "" +
 			"5:a := 0 ;"
@@ -42,7 +42,7 @@ public class Test {
 			+ "\n" + "40 : if(x > y) if(z != z) goto90;"
 			+ "\n" + "40 : if(x > y) if(z != z) goto 90;"
 			+ "\n" + "40 : if(x > y) if(z != z) goto90 ;"
-			;
+			+ "\n";
 	
 	public static final String EXERCISE_PROGRAM_MINIMAL_SPACES_FAIL_TO_PARSE_REVERSE_POLISH_NOTATION = "" +
 			"10 : x := 1 ;"
@@ -50,7 +50,7 @@ public class Test {
 			+ "\n" + "30 : z := 0 ;"
 			+ "\n" + "40 : if(x > y) if(x!=z) if(x <= z)goto 90 ;"
 			+ "\n" + "50 : z := +z x ;"
-			;
+			+ "\n";
 	
 	public static final String EXERCISE_PROGRAM_EXTRA_SPACES_SHOULD_FAIL = "" +
 			"10 : x :=    1 ;"
@@ -61,97 +61,98 @@ public class Test {
 			+ "\n" + "60 : x :=  +      x    - 2    1 ;"
 			+ "\n" + "70 : goto 40    ;"
 			+ "\n" + "90 : print (  z   ) ;"
-			;
+			+ "\n";
 	
 	public static final String PRINT_COMMAND_WITH_NUM_AND_SPACES_SHOULD_FAIL =  "" +
 			"22 : print(42   ) ;" 
-			;
+			+ "\n";
 	
 	public static final String EMPTY_PRINT_COMMAND_1 =  "" +
 			"22 : print() ;" 
-			;
+			+ "\n";
 	
 	public static final String EMPTY_PRINT_COMMAND_2 =  "" +
 			"23 : print(   \t\t  ) ;" 
-			;
+			+ "\n";
 	
 	public static final String EMPTY_IF_COMMAND_1 =  "" +
 			"32 : if() print(0) ;" 
 			+ "\n" + "33 : if (x > y) ;"
-			;
+			+ "\n";
 	
 	public static final String EMPTY_IF_COMMAND_2 =  "" +
 			"34 : if(   \t\t  ) print(1) ;" 
-			;
+			+ "\n";
 	
 	public static final String EMPTY_GOTO_COMMAND_1 =  "" +
 			"42 : goto ;" 
-			;
+			+ "\n";
 	
 	public static final String EMPTY_GOTO_COMMAND_2 =  "" +
 			"43 : goto;" 
-			;
+			+ "\n";
 		
 	public static final String EMPTY_ASSIGN_COMMAND_1 =  "" +
 			"52 : x := ;" 
-			;
+			+ "\n";
 	
 	public static final String EMPTY_ASSIGN_COMMAND_2 =  "" +
 			"53 :    := 0;" 
-			;
+			+ "\n";
 	
 	public static final String INVALID_ASSIGN_COMMAND_2 =  "" +
 			"66 : 4 := 3;" 
-			;
+			+ "\n";
 	
 	public static final String MISSING_NEKPAS =  "" +
 			"70 : print(7) ;"
 			+ "\n" + "71 : print(8)"
-			;
+			+ "\n";
 	
 	public static final String NEGATIVE_LABEL_SHOULD_FAIL =  "" +
 			"-1 : print(10) ;"
-			;
+			+ "\n";
 	
 	public static final String ZERO_LABEL =  "" +
 			"0 : print(100) ;"
-			;
+			+ "\n";
 	
 	public static final String ZERO_LABEL_NOT_ACCORDING_TO_CFG =  "" +
 			"0123 : print(100) ;"
-			;
+			+ "\n";
 	
 	public static final String NOT_MONOTONIC_LABELS_1_WITH_SYNTAX_ERROR =  "" +
-			"1 : print(2);"
+			"1 : print(2) ;"
 			+ "\n" + "500 : print(500) ;"
 			+ "\n" + "250 : print(250) ;"
-			;
+			+ "\n" + "200 : print(270) ;"
+			+ "\n";
 	
 	public static final String NOT_MONOTONIC_LABELS_2 =  "" +
 			"300 : print(300);"
 			+ "\n" + "300 : print(300);"
-			;
+			+ "\n";
 	
 	public static final String MULTI_PRINT =  "" +
 			"1 : print(100) ;"
 			+ "\n" + "2 : print(200) ;"
-			;
+			+ "\n";
 	
 	public static final String BAD_GOTO_TEST =  "" +
 			"1 : goto 10 ;"
-			;
+			+ "\n";
 	
 	public static final String BAD_GOTO_TEST_INFINITE_LOOP =  "" +
 			"1 : goto 1 ;"
-			;
+			+ "\n";
 	
 	public static final String UNINIT_VAR =  "" +
 			"1 : print(x) ;"
-			;
+			+ "\n";
 	
 	public static final String ILLEGAL_VAR_NAME =  "" +
 			"1 : X := 2 ;"
-			;
+			+ "\n";
 	
 	public static final String COMPLEX_IF_SHOULD_FAIL =  "" +
 			"1 : x := 2 ;"
@@ -162,8 +163,20 @@ public class Test {
 			+ "\n" + "6 : if(+ x + x + x x > - x x) print(1) ;"
 			+ "\n" + "7 : if(+ x x <= * x x) print(1) ;"
 			+ "\n" + "8 : if(+ x x > / 2 y) print(1) ;"
-			;
+			+ "\n";
 	
+	public static final String DIVIDE =  "" +
+			"1 : print(\\ 8 2) ;"
+			+ "\n" + "2 : x := \\ 8 2 ;"
+			+ "\n" + "3 : print(x) ;"
+			+ "\n";
+	
+	public static final String LINE_FEEDS_ONLY = "" +
+			"\n"
+			+ "\n"
+			+ "\n"
+			+ "\n";
+		
 	public static void main(String[] args) {
 		try {
 			runAllTests();
@@ -175,7 +188,7 @@ public class Test {
 
 	private static void runAllTests() {
 		Debug.DEBUG = false;
-		test("EMPTY_PROGRAM", EMPTY_PROGRAM, 0);
+		test("EMPTY_PROGRAM", EMPTY_PROGRAM, 1); // The "no line-feed in end" case
 		test("EXERCISE_PROGRAM", EXERCISE_PROGRAM, 0);
 		test("EXERCISE_PROGRAM_NO_SPACE_BEFORE_NEKPAS", EXERCISE_PROGRAM_NO_SPACE_BEFORE_NEKPAS, 1);
 		test("EXERCISE_PROGRAM_MINIMAL_SPACES_GOTO_SPACE_FAIL", EXERCISE_PROGRAM_MINIMAL_SPACES_GOTO_SPACE_FAIL ,1);
@@ -202,6 +215,8 @@ public class Test {
 		test("UNINIT_VAR", UNINIT_VAR, 1);
 		test("ILLEGAL_VAR_NAME", ILLEGAL_VAR_NAME, 1);
 		test("COMPLEX_IF_SHOULD_FAIL", COMPLEX_IF_SHOULD_FAIL, 1);
+		test("DIVIDE", DIVIDE, 0);
+		test("LINE_FEEDS_ONLY", LINE_FEEDS_ONLY, 1);
 	}
 	
 	private static void test(String testName, String programStr, int expectedResult) {

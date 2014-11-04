@@ -25,7 +25,11 @@ public class GotoCommand implements Command {
 		Debug.debug("Goto command string = " + cmdString);
 		
 		try {
-			cmdLabel = Integer.valueOf(cmdString.substring(prefix.length(), cmdString.length()));		
+			cmdLabel = Integer.valueOf(cmdString.substring(prefix.length(), cmdString.length()));
+			if (cmdLabel < 0) {
+				Error.error(lineNumber, Error.SYNTAX_ERROR);
+			}
+			
 			commandLabelsInProgram.put(cmdLabel, lineNumber); // Added once per constructor (new goto command) run.
 		} catch (Exception e) {
 			Error.error(lineNumber, Error.SYNTAX_ERROR, e);

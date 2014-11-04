@@ -12,7 +12,7 @@ public class VarExpression implements Expression {
 	public VarExpression(RawExpression rawExpression) throws CompilationException {
 		try {
 			// Extract first word
-			String varString = rawExpression.getFirstWord();
+			String varString = rawExpression.getAndAdvanceFirstWord();
 			
 			if (varString.length() != 1) { // Must be a valid variable word - length 1
 				Error.error(rawExpression.getLineNumber(), Error.SYNTAX_ERROR);

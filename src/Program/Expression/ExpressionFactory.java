@@ -11,7 +11,7 @@ public class ExpressionFactory {
 		
 		Expression retExpression = rawExpression.parseExpressionString();
 		Debug.debug(rawExpression.getExprString() + " of length " + rawExpression.getExprString().length());
-		if (rawExpression.getExprString().contains("  ")) {
+		if (!rawExpression.getExprString().isEmpty()) {
 			Error.error(lineNumber, Error.SYNTAX_ERROR);
 		}
 		

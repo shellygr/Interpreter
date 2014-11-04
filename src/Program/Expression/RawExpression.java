@@ -70,7 +70,7 @@ public class RawExpression {
 					&& ch <= '9';
 	}
 	
-	public String getFirstWord() {
+	public String getAndAdvanceFirstWord() {
 		String firstWord = null;
 		
 		// Extract first word
@@ -78,6 +78,7 @@ public class RawExpression {
 		
 		if (firstDelimiterIndex == -1) {
 			firstWord = exprString;
+			exprString = "";
 		} else {
 			firstWord = exprString.substring(0, firstDelimiterIndex);
 			exprString = exprString.substring(firstDelimiterIndex+1);

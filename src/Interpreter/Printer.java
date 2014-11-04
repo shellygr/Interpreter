@@ -9,4 +9,5 @@ public class Printer {
 	public static void Print(int val) {
 		System.out.println("" + val);
 	}
+	
 }

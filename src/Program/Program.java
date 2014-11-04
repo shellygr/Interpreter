@@ -18,19 +18,22 @@ public class Program {
 
 	private StatementList stmtList = null;
 	private SortedMap<Integer, Command> cmdLabelToCmdMap = null;
-	
+
 	public Program(BufferedReader reader) throws CompilationException {
 		stmtList = new StatementList(reader);
+
 		buildMapAndVerify();
+			
+		this.fini();
+		
 		if (printErrors(stmtList.getLineToErrors())) {
-			this.fini();
 			throw new CompilationException(0);
 		}
 	}
 
 	private boolean printErrors(TreeMap<Integer, List<Integer>> lineToErrors) {
 		boolean hadError = false;
-		
+
 		for (Integer lineNumber : lineToErrors.keySet()) {
 			List<Integer> errorsForLine = lineToErrors.get(lineNumber);
 			Collections.sort(errorsForLine);
@@ -39,7 +42,7 @@ public class Program {
 				hadError = true;
 			}
 		}
-		
+
 		return hadError;
 	}
 
@@ -48,33 +51,57 @@ public class Program {
 		
 		ArrayList<Statement> statements = stmtList.getStatements();
 		Integer currentCommandLabel = null;
-		int currentStatementIndex = 0;
-		
-		if (statements.size() > 0) {
-			currentCommandLabel = statements.get(0).getNum()-1; // current will be updated each round, must increase
-		}
 		
 		for (Statement statement : statements) {
-			++currentStatementIndex;
-			if (statement.getNum() <= currentCommandLabel) {
-				try {
-					Error.error(currentStatementIndex, Error.BAD_LABELS);
-				} catch (CompilationException e) {
-					stmtList.putNewError(currentStatementIndex, Error.BAD_LABELS.code);
-				}
+			if (statement == null) {
+				continue;
 			}
 			
 			currentCommandLabel = statement.getNum();
 			cmdLabelToCmdMap.put(currentCommandLabel, statement.getCmd());
 		}
+
+		verifyLabels();
 		
 		verifyGotos();
+	}
+
+	private void verifyLabels() {
+		ArrayList<Statement> statements = stmtList.getStatements();
+		int currentStatementIndex = 0;
+
+		while (currentStatementIndex < statements.size()) {
+			Statement currentStatement = statements.get(currentStatementIndex);
+			if  (currentStatement == null) {
+				++currentStatementIndex;
+				continue;
+			}
+			
+			Integer currentStatementLabel = currentStatement.getNum();
+			
+			for (int i = 0 ; i < currentStatementIndex ; ++i) {
+				Statement upperStatement = statements.get(i);
+				if (upperStatement == null) {
+					continue;
+				}
+				
+				if (upperStatement.getNum() >= currentStatementLabel) {
+					try {
+						Error.error(currentStatementIndex, Error.BAD_LABELS);
+					} catch (CompilationException e) {
+						stmtList.putNewError(currentStatementIndex+1, Error.BAD_LABELS.code);
+					}
+				}
+			}
+			
+			++currentStatementIndex;
+		}
 	}
 
 	private void verifyGotos() {
 		Map<Integer, Integer> gotoLabelsToLineNumberMap = GotoCommand.getGotoCommandLabelsInProgram();
 		Debug.debug("gotos: " + gotoLabelsToLineNumberMap);
-		
+
 		for (Integer gotoLabel : gotoLabelsToLineNumberMap.keySet()) {
 			if (!cmdLabelToCmdMap.keySet().contains(gotoLabel)) {
 				Debug.debug("Set " + cmdLabelToCmdMap.keySet() + " doesn't contain " + gotoLabel);
@@ -86,7 +113,7 @@ public class Program {
 			}
 		}
 	}
-	
+
 	public void fini() {
 		GotoCommand.reset();
 	}

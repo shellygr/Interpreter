@@ -13,10 +13,9 @@ public class PrintCommand implements Command {
 	Expression expression;
 	
 	public PrintCommand(String cmdString, int lineNumber) throws CompilationException {
-		cmdString = cmdString.trim();
-		
 		String prefix = "print(";
 		String suffix = ")";
+		
 		if (cmdString.indexOf(prefix) != 0
 				|| !cmdString.endsWith(suffix))
 		{

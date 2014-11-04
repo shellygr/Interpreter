@@ -14,7 +14,7 @@ public class ComplexExpression implements Expression {
 	
 	public ComplexExpression(RawExpression rawExpression) throws CompilationException {
 		try {
-			String binaryOpString = rawExpression.getFirstWord();
+			String binaryOpString = rawExpression.getAndAdvanceFirstWord();
 			binaryOp = BinaryOp.parseBinaryOp(binaryOpString);
 			if (binaryOp == BinaryOp.INVALID) {
 				Error.error(rawExpression.getLineNumber(), Error.SYNTAX_ERROR);
